@@ -1,10 +1,14 @@
 package common
 
+import java.nio.charset.StandardCharsets
+
 sealed trait Message {
   def typeChar(): Char
   def idString(): String
   def msgString(): String
+
   override def toString: String = s"${typeChar()}{${idString()}}{${msgString()}}"
+  def toBytesArray: Array[Byte] = toString.getBytes(StandardCharsets.UTF_8)
 }
 
 case class ChatMessage(senderID: String, msg: String) extends Message {
@@ -27,7 +31,7 @@ case class UserDisconnectedMessage(userID: String) extends Message {
 
 
 object Message {
-  def unapply(s: String): Option[Message] = {
+  def apply(s: String): Option[Message] = {
     s match {
       case s"l{$id}{$_}"   => Some(UserLoggedInMessage(id))
       case s"d{$id}{$_}"   => Some(UserDisconnectedMessage(id))

@@ -1,17 +1,13 @@
 package client
 
-import common.{ChatMessage, ServerConfig}
-
-import java.io.IOException
-import java.net.Socket
+import scala.io.StdIn
 
 case object ClientMain extends App {
-  val clientSocket = new Socket(ServerConfig.address, ServerConfig.port)
-  try {
-    clientSocket.getOutputStream.write(ChatMessage("id", "msg").toString.getBytes)
-  } catch {
-    case e: IOException => println("Koniec")
-  } finally {
-    clientSocket.close()
-  }
+  val id: String = StdIn.readLine("Give your ID: ")
+  val client = Client(id)
+
+  ClientTCPReceiverThread(client).start()
+  ClientUDPReceiverThread(client).start()
+  ClientMulticastReceiverThread(client).start()
+  ClientSenderThread(client).start()
 }
