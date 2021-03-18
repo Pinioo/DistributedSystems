@@ -9,7 +9,7 @@ case class ServerUDP(serverTCP: ServerTCP) extends Thread {
 
   override def run(): Unit = {
     while (true) {
-      val bufferSize = 1024
+      val bufferSize = 20*1024
       val buffer = Array.fill[Byte](bufferSize)(0)
       val datagram = new DatagramPacket(buffer, bufferSize)
 
@@ -27,7 +27,6 @@ case class ServerUDP(serverTCP: ServerTCP) extends Thread {
             datagram.setAddress(sock.getInetAddress)
             datagram.setPort(sock.getPort)
             socket.send(datagram)
-            println(s"Datagram sent to ${sock.getPort}")
           }
         }
       serverTCP.clientSocketsSemaphore.release()
