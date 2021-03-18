@@ -1,0 +1,1 @@
+libraryDependencies += "com.rabbitmq" % "amqp-client" % "5.11.0"
