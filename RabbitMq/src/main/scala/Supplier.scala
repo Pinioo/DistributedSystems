@@ -33,7 +33,7 @@ object Supplier {
         }
 
         val queueName = channel.queueDeclare().getQueue
-        channel.queueBind(queueName, exchangeName, "admin")
+        channel.queueBind(queueName, exchangeName, "#.supplier.#")
         channel.basicConsume(queueName, true, consumer)
 
         StdIn.readLine

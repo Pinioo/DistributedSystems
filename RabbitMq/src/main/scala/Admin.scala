@@ -27,9 +27,12 @@ object Admin {
         channel.basicConsume(queueName, true, consumer)
 
         breakable { while(true){
-            StdIn.readLine match {
-                case "q" => break
-                case m   => channel.basicPublish(exchangeName, "admin", null, m.getBytes)
+            StdIn.readLine.strip match {
+                case "/q"     => break
+                case s"/c $m" => channel.basicPublish(exchangeName, "crew", null, m.getBytes)
+                case s"/s $m" => channel.basicPublish(exchangeName, "supplier", null, m.getBytes)
+                case s"/a $m" => channel.basicPublish(exchangeName, "crew.supplier", null, m.getBytes)
+                case _        => println("Not recognized command")
             }
         }}
         channel.close()

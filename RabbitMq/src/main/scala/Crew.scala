@@ -16,13 +16,20 @@ object Crew {
         val exchangeName = "exchange"
         channel.exchangeDeclare(exchangeName, BuiltinExchangeType.TOPIC);
         
+        val consumer = new DefaultConsumer(channel) {
+            override def handleDelivery(consumerTag: String, envelope: Envelope, properties: AMQP.BasicProperties, body: Array[Byte]) {
+                val message = new String(body, "UTF-8")
+                println("Received: " + message)
+            }
+        }
+
         val queueName = channel.queueDeclare().getQueue()
-        channel.queueBind(queueName, exchangeName, "admin")
+        channel.queueBind(queueName, exchangeName, "#.crew.#")
         channel.basicConsume(queueName, true, consumer)
 
         breakable { while(true){
-            StdIn.readLine match {
-                case "q" => break
+            StdIn.readLine.strip match {
+                case "/q" => break
                 case m   => channel.basicPublish(exchangeName, m, null, m.getBytes)
             }
         }}
