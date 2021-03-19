@@ -7,9 +7,9 @@ import scala.io.StdIn
 
 object Crew {
     def main(args: Array[String]): Unit = {
+        // RABBITMQ SETUP
         val factory = new ConnectionFactory()
         factory.setHost("localhost")
-        println("Crew")
         val connection = factory.newConnection()
         val channel = connection.createChannel()
 
@@ -18,19 +18,30 @@ object Crew {
         
         val consumer = new DefaultConsumer(channel) {
             override def handleDelivery(consumerTag: String, envelope: Envelope, properties: AMQP.BasicProperties, body: Array[Byte]) {
-                val message = new String(body, "UTF-8")
-                println("Received: " + message)
+                val messageStr = new String(body, "UTF-8")
+                Message(messageStr) match {
+                    case Some(msg) => msg match {
+                        case _: OrderProcessedMessage | _: AdminCrewMessage | _: AdminAllMessage =>
+                            msg.logMessage
+                        case _ =>
+                            print("[???] ")
+                            msg.logMessage
+                    }
+                    case None => println(s"Received imcompatible message: $messageStr")
+                }
             }
         }
 
         val queueName = channel.queueDeclare().getQueue()
         channel.queueBind(queueName, exchangeName, "#.crew.#")
+        ////
+
         channel.basicConsume(queueName, true, consumer)
 
         breakable { while(true){
             StdIn.readLine.strip match {
                 case "/q" => break
-                case m   => channel.basicPublish(exchangeName, m, null, m.getBytes)
+                case m   => channel.basicPublish(exchangeName, m, null, OrderMessage(queueName, m).getBytes)
             }
         }}
         channel.close()

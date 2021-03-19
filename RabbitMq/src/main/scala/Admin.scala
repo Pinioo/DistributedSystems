@@ -17,8 +17,11 @@ object Admin {
 
         val consumer = new DefaultConsumer(channel) {
             override def handleDelivery(consumerTag: String, envelope: Envelope, properties: AMQP.BasicProperties, body: Array[Byte]) {
-                val message = new String(body, "UTF-8")
-                println("Received: " + message)
+                val messageStr = new String(body, "UTF-8")
+                Message(messageStr) match {
+                    case Some(msg) => msg.logMessage
+                    case None =>      println(s"Received imcompatible message: $messageStr")
+                }
             }
         }
 
@@ -29,9 +32,9 @@ object Admin {
         breakable { while(true){
             StdIn.readLine.strip match {
                 case "/q"     => break
-                case s"/c $m" => channel.basicPublish(exchangeName, "crew", null, m.getBytes)
-                case s"/s $m" => channel.basicPublish(exchangeName, "supplier", null, m.getBytes)
-                case s"/a $m" => channel.basicPublish(exchangeName, "crew.supplier", null, m.getBytes)
+                case s"/c $m" => channel.basicPublish(exchangeName, "crew", null, AdminCrewMessage(m).getBytes)
+                case s"/s $m" => channel.basicPublish(exchangeName, "supplier", null, AdminSupplierMessage(m).getBytes)
+                case s"/a $m" => channel.basicPublish(exchangeName, "crew.supplier", null, AdminAllMessage(m).getBytes)
                 case _        => println("Not recognized command")
             }
         }}
