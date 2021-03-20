@@ -1,0 +1,1 @@
+sbt --java-home D:\jdks

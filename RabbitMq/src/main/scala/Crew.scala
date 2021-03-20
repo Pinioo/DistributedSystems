@@ -32,7 +32,12 @@ object Crew {
             }
         }
 
-        val queueName = channel.queueDeclare().getQueue()
+        val queueName = (args.length > 0) match {
+            case true  => 
+                channel.queueDeclare(args(0), false, false, false, null)
+                args(0)
+            case false => channel.queueDeclare().getQueue()
+        }
         channel.queueBind(queueName, exchangeName, "#.crew.#")
         ////
 
@@ -41,7 +46,9 @@ object Crew {
         breakable { while(true){
             StdIn.readLine.strip match {
                 case "/q" => break
-                case m   => channel.basicPublish(exchangeName, m, null, OrderMessage(queueName, m).getBytes)
+                case m   => 
+                    channel.basicPublish(exchangeName, m, null, OrderMessage(queueName, m).getBytes)
+                    println(s">>> $m ordered")
             }
         }}
         channel.close()
