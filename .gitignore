@@ -1,9 +1,4 @@
-lab
-Pinowski*
-RabbitMq/project
-RabbitMq/.bsp
-RabbitMq/target
-Socket-Chat/.idea
-Socket-Chat/project
-Socket-Chat/.bsp
-Socket-Chat/target
+.idea/
+project/
+.bsp/
+target/
