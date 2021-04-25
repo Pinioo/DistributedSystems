@@ -15,6 +15,7 @@ object MonitoringStation {
           s"Station ${context.self.path.name}\n" +
             s"Query $queryId\n" +
             s"Response time: ${System.currentTimeMillis - timers(queryId)}ms\n" +
+            s"Errors: ${resMap.size}\n" +
             s"$answersPercentage% of status responses received\n" +
             resMap.mkString("\t", "\n\t", "\n")
         )
