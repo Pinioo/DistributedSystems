@@ -23,8 +23,8 @@ object Dispatcher {
           val results = Future.sequence(
               resultsFutures
                 .map(
-                  _.map[Option[SatelliteResponseMessage]]{
-                    case m: SatelliteResponseMessage => Some(m)
+                  _.map[Option[SatelliteAPI.Status.Value]]{
+                    case m: SatelliteResponseMessage => Some(m.status)
                     case _ => None
                   }
                 )
@@ -40,7 +40,7 @@ object Dispatcher {
                 .filter(_._2.nonEmpty)
 
               val resMap = receivedResponses
-                .map{case (i, statusOpt) => (i, statusOpt.get.status)}
+                .map{case (i, statusOpt) => (i, statusOpt.get)}
                 .filterNot(_._2 == SatelliteAPI.Status.OK)
                 .toMap
 
