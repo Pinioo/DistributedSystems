@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "7695747c-4a8d-44c8-9a02-833606d38f54",
+		"name": "REST Lab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "MyServiceRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/?base=PLN&symbols[]=GBP&symbols[]=USD",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "base",
+							"value": "PLN"
+						},
+						{
+							"key": "symbols[]",
+							"value": "GBP"
+						},
+						{
+							"key": "symbols[]",
+							"value": "USD"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "MyServiceRequest",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/?base=PLN&symbols[]=GBP&symbols[]=USD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "base",
+									"value": "PLN"
+								},
+								{
+									"key": "symbols[]",
+									"value": "GBP"
+								},
+								{
+									"key": "symbols[]",
+									"value": "USD"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Referrer-Policy",
+							"value": "origin-when-cross-origin, strict-origin-when-cross-origin"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "master-only"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 23 May 2021 18:24:37 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "556"
+						}
+					],
+					"cookie": [],
+					"body": "\n<!DOCTYPE html>\n<html lang=\"en\">\n    <body>\n        PLN -> GBP\n        <br />&emsp;Current: 0.1914 @ 2021-05-23\n        <br />\n&emsp;Minimum: 0.1884 @ 2021-05-10\n        <br />\n&emsp;Maximum: 0.1918 @ 2021-05-20\n        <br />\n&emsp;Minimum change: 98.90 % @ 2021-05-10\n        <br />\n&emsp;Maximum change: 100.77 % @ 2021-05-13\n        <br />\n        <br />PLN -> USD\n        <br />&emsp;Current: 0.2709 @ 2021-05-23\n        <br />\n&emsp;Minimum: 0.2626 @ 2021-05-05\n        <br />\n&emsp;Maximum: 0.2721 @ 2021-05-20\n        <br />\n&emsp;Minimum change: 99.11 % @ 2021-05-12\n        <br />\n&emsp;Maximum change: 101.26 % @ 2021-05-07\n        <br />\n    </body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "PublicServiceRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.exchangerate.host/timeseries?start_date=2021-04-01&end_date=2021-05-01&base=PLN&symbols=EUR",
+					"protocol": "https",
+					"host": [
+						"api",
+						"exchangerate",
+						"host"
+					],
+					"path": [
+						"timeseries"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2021-04-01"
+						},
+						{
+							"key": "end_date",
+							"value": "2021-05-01"
+						},
+						{
+							"key": "base",
+							"value": "PLN"
+						},
+						{
+							"key": "symbols",
+							"value": "EUR"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PublicServiceRequest",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.exchangerate.host/timeseries?start_date=2021-04-01&end_date=2021-05-01&base=PLN&symbols=EUR",
+							"protocol": "https",
+							"host": [
+								"api",
+								"exchangerate",
+								"host"
+							],
+							"path": [
+								"timeseries"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2021-04-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2021-05-01"
+								},
+								{
+									"key": "base",
+									"value": "PLN"
+								},
+								{
+									"key": "symbols",
+									"value": "EUR"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 23 May 2021 18:22:39 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "2000"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "1999"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "false"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, Methods"
+						},
+						{
+							"key": "X-Forwarded-For",
+							"value": "api.exchangerate.host"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=31536000"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4da-SIBYEpIsK/J52u7VlN+QzQVTqPQ\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "HIT"
+						},
+						{
+							"key": "Age",
+							"value": "93"
+						},
+						{
+							"key": "cf-request-id",
+							"value": "0a3c10123d00004e6d4ba06000000001"
+						},
+						{
+							"key": "Expect-CT",
+							"value": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\""
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report?s=1lJm%2F5cHfpqsJSVH3qG7h6Qfnm4BVahI7iQlrugLP73J6%2BHRJwkgk8kuUeZzkOfM15BsR6bD7r5m7174JPCX25OY79T5CdUrudgRtgx6k2Gs6%2Bcmz3E%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "NEL",
+							"value": "{\"report_to\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "65404f96ca574e6d-FRA"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3-27=\":443\"; ma=86400, h3-28=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"motd\": {\n        \"msg\": \"If you or your company use this project or like what we doing, please consider backing us so we can continue maintaining and evolving this project.\",\n        \"url\": \"https://exchangerate.host/#/donate\"\n    },\n    \"success\": true,\n    \"timeseries\": true,\n    \"base\": \"PLN\",\n    \"start_date\": \"2021-04-01\",\n    \"end_date\": \"2021-05-01\",\n    \"rates\": {\n        \"2021-04-01\": {\n            \"EUR\": 0.217903\n        },\n        \"2021-04-02\": {\n            \"EUR\": 0.217617\n        },\n        \"2021-04-03\": {\n            \"EUR\": 0.217639\n        },\n        \"2021-04-04\": {\n            \"EUR\": 0.217215\n        },\n        \"2021-04-05\": {\n            \"EUR\": 0.217818\n        },\n        \"2021-04-06\": {\n            \"EUR\": 0.217821\n        },\n        \"2021-04-07\": {\n            \"EUR\": 0.218641\n        },\n        \"2021-04-08\": {\n            \"EUR\": 0.220034\n        },\n        \"2021-04-09\": {\n            \"EUR\": 0.220705\n        },\n        \"2021-04-10\": {\n            \"EUR\": 0.220054\n        },\n        \"2021-04-11\": {\n            \"EUR\": 0.220649\n        },\n        \"2021-04-12\": {\n            \"EUR\": 0.220653\n        },\n        \"2021-04-13\": {\n            \"EUR\": 0.218993\n        },\n        \"2021-04-14\": {\n            \"EUR\": 0.219545\n        },\n        \"2021-04-15\": {\n            \"EUR\": 0.21968\n        },\n        \"2021-04-16\": {\n            \"EUR\": 0.220114\n        },\n        \"2021-04-17\": {\n            \"EUR\": 0.220133\n        },\n        \"2021-04-18\": {\n            \"EUR\": 0.220129\n        },\n        \"2021-04-19\": {\n            \"EUR\": 0.219717\n        },\n        \"2021-04-20\": {\n            \"EUR\": 0.219667\n        },\n        \"2021-04-21\": {\n            \"EUR\": 0.21948\n        },\n        \"2021-04-22\": {\n            \"EUR\": 0.219074\n        },\n        \"2021-04-23\": {\n            \"EUR\": 0.219474\n        },\n        \"2021-04-24\": {\n            \"EUR\": 0.219498\n        },\n        \"2021-04-25\": {\n            \"EUR\": 0.219702\n        },\n        \"2021-04-26\": {\n            \"EUR\": 0.219395\n        },\n        \"2021-04-27\": {\n            \"EUR\": 0.218853\n        },\n        \"2021-04-28\": {\n            \"EUR\": 0.218508\n        },\n        \"2021-04-29\": {\n            \"EUR\": 0.218933\n        },\n        \"2021-04-30\": {\n            \"EUR\": 0.21933\n        },\n        \"2021-05-01\": {\n            \"EUR\": 0.219457\n        }\n    }\n}"
+				}
+			]
+		}
+	]
+}

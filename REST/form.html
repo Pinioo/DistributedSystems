@@ -6,15 +6,24 @@
 </head>
 <body>
 <form action="http://localhost:9000" method="get">
-    <label for="base">Base:</label><br>
-    <input type="text" id="base" name="base" /><br>
-    <label for="symbols[]">Symbols:</label>
-    <select id="symbols[]" name="symbols[]" multiple>
-        <option value="GBP">GBP</option>
-        <option value="PLN">PLN</option>
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-    </select>
+    <p>From:</p>
+    <input type="radio" name="base" id="bGBP" value="GBP" />
+    <label for="bGBP">GBP</label><br />
+    <input type="radio" name="base" id="bPLN" value="PLN" />
+    <label for="bPLN">PLN</label><br />
+    <input type="radio" name="base" id="bUSD" value="USD" />
+    <label for="bUSD">USD</label><br />
+    <input type="radio" name="base" id="bEUR" value="EUR" />
+    <label for="bEUR">EUR</label><br />
+    <p>To:</p>
+    <input type="checkbox" name="symbols[]" id="GBP" value="GBP" />
+    <label for="GBP">GBP</label><br />
+    <input type="checkbox" name="symbols[]" id="PLN" value="PLN" />
+    <label for="PLN">PLN</label><br />
+    <input type="checkbox" name="symbols[]" id="USD" value="USD" />
+    <label for="USD">USD</label><br />
+    <input type="checkbox" name="symbols[]" id="EUR" value="EUR" />
+    <label for="EUR">EUR</label><br /><br />
     <input type="submit" />
 </form>
 </body>
