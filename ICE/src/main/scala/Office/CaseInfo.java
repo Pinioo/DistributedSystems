@@ -18,8 +18,6 @@ package Office;
 public class CaseInfo implements java.lang.Cloneable,
                                  java.io.Serializable
 {
-    public int caseId;
-
     public int clientId;
 
     public boolean paymentDone;
@@ -28,9 +26,8 @@ public class CaseInfo implements java.lang.Cloneable,
     {
     }
 
-    public CaseInfo(int caseId, int clientId, boolean paymentDone)
+    public CaseInfo(int clientId, boolean paymentDone)
     {
-        this.caseId = caseId;
         this.clientId = clientId;
         this.paymentDone = paymentDone;
     }
@@ -49,10 +46,6 @@ public class CaseInfo implements java.lang.Cloneable,
 
         if(r != null)
         {
-            if(this.caseId != r.caseId)
-            {
-                return false;
-            }
             if(this.clientId != r.clientId)
             {
                 return false;
@@ -72,7 +65,6 @@ public class CaseInfo implements java.lang.Cloneable,
     {
         int h_ = 5381;
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, "::Office::CaseInfo");
-        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, caseId);
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, clientId);
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, paymentDone);
         return h_;
@@ -94,14 +86,12 @@ public class CaseInfo implements java.lang.Cloneable,
 
     public void ice_writeMembers(com.zeroc.Ice.OutputStream ostr)
     {
-        ostr.writeInt(this.caseId);
         ostr.writeInt(this.clientId);
         ostr.writeBool(this.paymentDone);
     }
 
     public void ice_readMembers(com.zeroc.Ice.InputStream istr)
     {
-        this.caseId = istr.readInt();
         this.clientId = istr.readInt();
         this.paymentDone = istr.readBool();
     }
@@ -137,7 +127,7 @@ public class CaseInfo implements java.lang.Cloneable,
     {
         if(ostr.writeOptional(tag, com.zeroc.Ice.OptionalFormat.VSize))
         {
-            ostr.writeSize(9);
+            ostr.writeSize(5);
             ice_write(ostr, v);
         }
     }
@@ -158,5 +148,5 @@ public class CaseInfo implements java.lang.Cloneable,
     private static final CaseInfo _nullMarshalValue = new CaseInfo();
 
     /** @hidden */
-    public static final long serialVersionUID = 2976581616764122817L;
+    public static final long serialVersionUID = -7945722467445120481L;
 }

@@ -1,6 +1,5 @@
 module Office {
     struct CaseInfo {
-        int caseId;
         int clientId;
         bool paymentDone;
     };

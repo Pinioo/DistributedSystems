@@ -63,7 +63,6 @@ namespace Office
 
 struct CaseInfo
 {
-    int caseId;
     int clientId;
     bool paymentDone;
 
@@ -71,9 +70,9 @@ struct CaseInfo
      * Obtains a tuple containing all of the struct's data members.
      * @return The data members in a tuple.
      */
-    std::tuple<const int&, const int&, const bool&> ice_tuple() const
+    std::tuple<const int&, const bool&> ice_tuple() const
     {
-        return std::tie(caseId, clientId, paymentDone);
+        return std::tie(clientId, paymentDone);
     }
 };
 
@@ -489,7 +488,7 @@ template<>
 struct StreamableTraits<::Office::CaseInfo>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 9;
+    static const int minWireSize = 5;
     static const bool fixedLength = true;
 };
 
@@ -498,7 +497,7 @@ struct StreamReader<::Office::CaseInfo, S>
 {
     static void read(S* istr, ::Office::CaseInfo& v)
     {
-        istr->readAll(v.caseId, v.clientId, v.paymentDone);
+        istr->readAll(v.clientId, v.paymentDone);
     }
 };
 
@@ -506,7 +505,7 @@ template<>
 struct StreamableTraits<::Office::PassportCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 11;
+    static const int minWireSize = 7;
     static const bool fixedLength = false;
 };
 
@@ -533,7 +532,7 @@ template<>
 struct StreamableTraits<::Office::VisaCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 11;
+    static const int minWireSize = 7;
     static const bool fixedLength = false;
 };
 
@@ -550,7 +549,7 @@ template<>
 struct StreamableTraits<::Office::DriverLicenseCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 12;
+    static const int minWireSize = 8;
     static const bool fixedLength = false;
 };
 
@@ -662,7 +661,6 @@ namespace Office
 
 struct CaseInfo
 {
-    ::Ice::Int caseId;
     ::Ice::Int clientId;
     bool paymentDone;
 
@@ -671,10 +669,6 @@ struct CaseInfo
         if(this == &rhs_)
         {
             return true;
-        }
-        if(caseId != rhs_.caseId)
-        {
-            return false;
         }
         if(clientId != rhs_.clientId)
         {
@@ -690,14 +684,6 @@ struct CaseInfo
     bool operator<(const CaseInfo& rhs_) const
     {
         if(this == &rhs_)
-        {
-            return false;
-        }
-        if(caseId < rhs_.caseId)
-        {
-            return true;
-        }
-        else if(rhs_.caseId < caseId)
         {
             return false;
         }
@@ -1476,7 +1462,7 @@ template<>
 struct StreamableTraits< ::Office::CaseInfo>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 9;
+    static const int minWireSize = 5;
     static const bool fixedLength = true;
 };
 
@@ -1485,7 +1471,6 @@ struct StreamWriter< ::Office::CaseInfo, S>
 {
     static void write(S* ostr, const ::Office::CaseInfo& v)
     {
-        ostr->write(v.caseId);
         ostr->write(v.clientId);
         ostr->write(v.paymentDone);
     }
@@ -1496,7 +1481,6 @@ struct StreamReader< ::Office::CaseInfo, S>
 {
     static void read(S* istr, ::Office::CaseInfo& v)
     {
-        istr->read(v.caseId);
         istr->read(v.clientId);
         istr->read(v.paymentDone);
     }
@@ -1506,7 +1490,7 @@ template<>
 struct StreamableTraits< ::Office::PassportCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 11;
+    static const int minWireSize = 7;
     static const bool fixedLength = false;
 };
 
@@ -1546,7 +1530,7 @@ template<>
 struct StreamableTraits< ::Office::VisaCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 11;
+    static const int minWireSize = 7;
     static const bool fixedLength = false;
 };
 
@@ -1576,7 +1560,7 @@ template<>
 struct StreamableTraits< ::Office::DriverLicenseCaseData>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 12;
+    static const int minWireSize = 8;
     static const bool fixedLength = false;
 };
 

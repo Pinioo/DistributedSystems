@@ -1,42 +1,78 @@
-import Office.{CaseStatus, CaseStatusEnum, ClientPrx, PassportCaseData}
+import Office.{CaseStatus, CaseStatusEnum, ClientPrx, Country, DriverLicenseCaseData, PassportCaseData, VisaCaseData}
 
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.concurrent
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.jdk.CollectionConverters.ConcurrentMapHasAsScala
-import scala.util.{Random, Try}
+import scala.util.{Failure, Random, Try}
 
 object OfficeWorkersService {
-  val clientProxies: concurrent.Map[Int, ClientPrx] = new ConcurrentHashMap[Int, ClientPrx]().asScala
-  val awaitingCases: concurrent.Map[Int, List[CaseStatus]] = new ConcurrentHashMap[Int, List[CaseStatus]]().asScala
+  var nextCaseId = new AtomicInteger(1)
+  var clientProxies: Map[Int, ClientPrx] = Map.empty[Int, ClientPrx]
+  var awaitingCases: Map[Int, List[CaseStatus]] = Map.empty[Int, List[CaseStatus]]
 
   def processPassportCase(passportCaseData: PassportCaseData): Int = {
-    val estimatedTime = Random.between(5000, 15000)
+    val caseId = nextCaseId.getAndIncrement()
     Future({
-      Thread.sleep(estimatedTime)
+      Thread.sleep(Random.between(2000, 4000))
       completeCase(
         passportCaseData.caseInfo.clientId,
-        new CaseStatus(passportCaseData.caseInfo.caseId, passportCaseData.caseInfo.paymentDone match {
+        new CaseStatus(caseId, passportCaseData.caseInfo.paymentDone match {
           case true => CaseStatusEnum.APPROVED
           case false => CaseStatusEnum.REJECTED
         })
       )
     })
-    estimatedTime
+    caseId
+  }
+
+  def processVisaCase(visaCaseData: VisaCaseData): Int = {
+    val caseId = nextCaseId.getAndIncrement()
+    Future({
+      Thread.sleep(Random.between(2000, 4000))
+      completeCase(
+        visaCaseData.caseInfo.clientId,
+        new CaseStatus(caseId, (visaCaseData.caseInfo.paymentDone, visaCaseData.country) match {
+          case (_, Country.NorthKorea) => CaseStatusEnum.REJECTED
+          case (_, Country.Germany) => CaseStatusEnum.APPROVED
+          case (true, _) => CaseStatusEnum.APPROVED
+        })
+      )
+    })
+    caseId
+  }
+
+  def processDriverLicenseCase(driverLicenseCaseData: DriverLicenseCaseData): Int = {
+    val caseId = nextCaseId.getAndIncrement()
+    Future({
+      Thread.sleep(Random.between(2000, 4000))
+      completeCase(
+        driverLicenseCaseData.caseInfo.clientId,
+        new CaseStatus(caseId, driverLicenseCaseData.caseInfo.paymentDone match {
+          case true => CaseStatusEnum.APPROVED
+          case false => CaseStatusEnum.REJECTED
+        })
+      )
+    })
+    caseId
   }
 
   def completeCase(clientId: Int, caseStatus: CaseStatus): Unit =
     clientProxies.get(clientId).foreach {
       clientPrx =>
+        println(s"${clientId} proxy found")
         Try {
           clientPrx.sendCaseStatus(caseStatus)
+          println(s"${caseStatus.caseId} status sent successfully.")
         } match {
-          case _ =>
-            awaitingCases.put(
-              clientId,
-              caseStatus +: awaitingCases.getOrElse(clientId, List.empty)
+          case Failure(e) =>
+            awaitingCases += (
+              clientId ->
+              (caseStatus +: awaitingCases.getOrElse(clientId, List.empty))
             )
+            println(s"${caseStatus.caseId} status cached.")
         }
     }
 }
