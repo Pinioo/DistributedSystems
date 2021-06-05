@@ -1,4 +1,3 @@
-import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
 
 case class CounterStreamObserver() extends StreamObserver[TestServices.Number] {
@@ -6,7 +5,7 @@ case class CounterStreamObserver() extends StreamObserver[TestServices.Number] {
     println(value.getNumber)
 
   override def onError(t: Throwable): Unit =
-    t.printStackTrace()
+    Console.err.println(t.getMessage)
 
   override def onCompleted(): Unit =
     println("All number received")

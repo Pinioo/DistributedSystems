@@ -4,7 +4,7 @@ import scala.io.StdIn
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 object Client extends App {
-  val channelBuilder = ManagedChannelBuilder.forAddress("localhost", 50000)
+  val channelBuilder = ManagedChannelBuilder.forAddress("localhost", 20000)
   channelBuilder.usePlaintext()
   val channel = channelBuilder.build()
   val fibBlockingStub = FibonacciServiceGrpc.newBlockingStub(channel)
@@ -19,9 +19,13 @@ object Client extends App {
     case s"1 $numberOpt" => numberOpt
       .toLongOption
       .foreach{
-        number => fibBlockingStub
-          .fibStream(toNumber(number)).asScala
-          .foreach(response => println(response.getNumber))
+        number => try {
+          fibBlockingStub
+            .fibStream(toNumber(number)).asScala
+            .foreach(response => println(response.getNumber))
+        } catch {
+            case e: Exception => Console.err.println(e.getMessage)
+        }
       }
     case s"2 $numberOpt" => numberOpt
       .toLongOption
@@ -33,7 +37,11 @@ object Client extends App {
       .toLongOption
       .foreach{
         number =>
-          println(helloBlockingStub.getHello(toNumber(number)).getMessage)
+          try {
+            println(helloBlockingStub.getHello(toNumber(number)).getMessage)
+          } catch {
+            case e: Exception => Console.err.println(e.getMessage)
+          }
       }
     case _ => println("Unknown command")
   }

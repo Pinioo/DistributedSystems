@@ -1,0 +1,1 @@
+sudo nginx -t -c grpc-test.cfg

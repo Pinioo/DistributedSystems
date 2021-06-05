@@ -1,0 +1,1 @@
+sudo cp nginx/nginx.config /usr/share/nginx/grpc-test.cfg

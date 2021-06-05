@@ -3,3 +3,4 @@ project/
 .bsp/
 target/
 oswiadczenie.txt
+*/*.exe
