@@ -4,5 +4,4 @@ project/
 target/
 oswiadczenie.txt
 */*.exe
-gen/
 out/
