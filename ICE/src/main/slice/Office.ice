@@ -38,6 +38,11 @@ module Office {
         CaseStatusEnum status;
     };
 
+    struct CaseStartedInfo {
+        int caseId;
+        bool serverHasProxy;
+    }
+
     sequence<CaseStatus> CaseStatusCache;
 
     interface Client {
@@ -46,9 +51,9 @@ module Office {
     };
 
     interface OfficeRegistration {
-        int startPassportCase(PassportCaseData passportCaseData);
-        int startVisaCase(VisaCaseData visaCaseData);
-        int startDriverLicenseCase(DriverLicenseCaseData driverLicenseCaseData);
+        CaseStartedInfo startPassportCase(PassportCaseData passportCaseData);
+        CaseStartedInfo startVisaCase(VisaCaseData visaCaseData);
+        CaseStartedInfo startDriverLicenseCase(DriverLicenseCaseData driverLicenseCaseData);
 
         void saveClient(int clientId, Client* client);
     };

@@ -1,6 +1,7 @@
 #include "Office.h"
 #include <Ice/Ice.h>
 #include <iostream>
+#include <string>
 
 class ClientImpl : public Office::Client {
 public:
@@ -14,27 +15,27 @@ public:
     }
 };
 
-Office::VisaCaseData testVisaData() {
+Office::VisaCaseData testVisaData(int clientId) {
     Office::VisaCaseData data;
-    data.caseInfo.clientId = 1;
+    data.caseInfo.clientId = clientId;
     data.caseInfo.paymentDone = true;
     data.country = Office::Country::USA;
     data.passportId = 10;
     return data;
 }
 
-Office::PassportCaseData testPassportData() {
+Office::PassportCaseData testPassportData(int clientId) {
     Office::PassportCaseData data;
-    data.caseInfo.clientId = 1;
+    data.caseInfo.clientId = clientId;
     data.caseInfo.paymentDone = true;
     data.firstname = "Jakub";
     data.lastname = "Jakubowski";
     return data;
 }
 
-Office::DriverLicenseCaseData testDriverLicenseData(bool passed) {
+Office::DriverLicenseCaseData testDriverLicenseData(int clientId, bool passed) {
     Office::DriverLicenseCaseData data;
-    data.caseInfo.clientId = 1;
+    data.caseInfo.clientId = clientId;
     data.caseInfo.paymentDone = true;
     data.firstname = "Jakub";
     data.lastname = "Jakubowski";
@@ -50,6 +51,12 @@ Office::DriverLicenseCaseData testDriverLicenseData(bool passed) {
 
 int main(int argc, char* argv[])
 {
+    int clientId = 1;
+    if(argc > 1){
+        try{
+            clientId = std::stoi(argv[1]);
+        } catch(const std::exception& ex){}
+    }
     try {
         Ice::CommunicatorHolder ich(argc, argv);
         auto base = ich->stringToProxy("OfficeRegistration:tcp -h 127.0.0.2 -p 10101");
@@ -62,18 +69,37 @@ int main(int argc, char* argv[])
         auto adapter = ich->createObjectAdapter("");
         auto object = std::make_shared<ClientImpl>();
         auto clientPrx = Ice::uncheckedCast<Office::ClientPrx>(adapter->addWithUUID(object));
-        registration->ice_getCachedConnection()->setAdapter(adapter);
-        registration->ice_getCachedConnection()->setACM(30, Ice::ACMClose::CloseOff, Ice::ACMHeartbeat::HeartbeatAlways);
-        registration->saveClient(1, clientPrx);
+
+        registration->ice_getConnection()->setAdapter(adapter);
+        registration->ice_getConnection()->setACM(30, Ice::ACMClose::CloseOff, Ice::ACMHeartbeat::HeartbeatAlways);
+        registration->saveClient(clientId, clientPrx);
 
         std::string c = "";
         while(c != "0") {
-            if(c == "1")
-                std::cout << "Visa case, case number: " << registration->startVisaCase(testVisaData()) << std::endl;
-            if(c == "2")
-                std::cout << "Passport case, case number: " << registration->startPassportCase(testPassportData()) << std::endl;
-            if(c == "3")
-                std::cout << "Driver license case, case number: " << registration->startDriverLicenseCase(testDriverLicenseData(true)) << std::endl;
+            Office::CaseStartedInfo startedCaseInfo;
+            if(c == "1") {
+                std::cout << "Visa case, case number: ";
+                startedCaseInfo = registration->startVisaCase(testVisaData(clientId));
+            }
+            else if(c == "2") {
+                std::cout << "Passport case, case number: ";
+                startedCaseInfo = registration->startPassportCase(testPassportData(clientId));
+            }
+            else if(c == "3") {
+                std::cout << "Driver license case, case number: ";
+                startedCaseInfo = registration->startDriverLicenseCase(testDriverLicenseData(clientId,true));
+            }
+            else {
+                std::cin >> c;
+                continue;
+            }
+
+            std::cout << startedCaseInfo.caseId << std::endl;
+            if(!startedCaseInfo.serverHasProxy){
+                registration->ice_getConnection()->setAdapter(adapter);
+                registration->ice_getConnection()->setACM(30, Ice::ACMClose::CloseOff, Ice::ACMHeartbeat::HeartbeatAlways);
+                registration->saveClient(clientId, clientPrx);
+            }
             std::cin >> c;
         }
     } catch(const std::exception& e) {
