@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Number {
+  int64 number = 1;
+}
+
+service FibonacciService {
+  rpc fibStream(Number) returns (stream Number) {}
+}
+
+message HelloMessage {
+  string message = 1;
+}
+
+service HelloService {
+  rpc getHello(Number) returns (HelloMessage) {}
+}
