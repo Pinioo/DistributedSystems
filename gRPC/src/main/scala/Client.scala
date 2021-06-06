@@ -31,7 +31,7 @@ object Client extends App {
       .toLongOption
       .foreach{
         number => fibAsyncStub
-          .fibStream(toNumber(number), CounterStreamObserver())
+          .fibStream(toNumber(number), NumberStreamObserver())
       }
     case s"3 $numberOpt" => numberOpt
       .toLongOption

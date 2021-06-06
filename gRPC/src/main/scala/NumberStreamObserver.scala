@@ -1,6 +1,6 @@
 import io.grpc.stub.StreamObserver
 
-case class CounterStreamObserver() extends StreamObserver[TestServices.Number] {
+case class NumberStreamObserver() extends StreamObserver[TestServices.Number] {
   override def onNext(value: TestServices.Number): Unit =
     println(value.getNumber)
 
