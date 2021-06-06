@@ -15,19 +15,19 @@ public:
     }
 };
 
-Office::VisaCaseData testVisaData(int clientId) {
+Office::VisaCaseData testVisaData(int clientId, Office::Country country) {
     Office::VisaCaseData data;
     data.caseInfo.clientId = clientId;
     data.caseInfo.paymentDone = true;
-    data.country = Office::Country::USA;
+    data.country = country;
     data.passportId = 10;
     return data;
 }
 
-Office::PassportCaseData testPassportData(int clientId) {
+Office::PassportCaseData testPassportData(int clientId, bool payment) {
     Office::PassportCaseData data;
     data.caseInfo.clientId = clientId;
-    data.caseInfo.paymentDone = true;
+    data.caseInfo.paymentDone = payment;
     data.firstname = "Jakub";
     data.lastname = "Jakubowski";
     return data;
@@ -75,19 +75,38 @@ int main(int argc, char* argv[])
         registration->saveClient(clientId, clientPrx);
 
         std::string c = "";
+        std::cout << "0. Quit" << std::endl;
+        std::cout << "1. USA visa" << std::endl;
+        std::cout << "2. North Korea visa" << std::endl;
+        std::cout << "3. Passport" << std::endl;
+        std::cout << "4. Passport without payment" << std::endl;
+        std::cout << "5. Driver license passed" << std::endl;
+        std::cout << "6. Driver license not passed" << std::endl;
         while(c != "0") {
             Office::CaseStartedInfo startedCaseInfo;
             if(c == "1") {
                 std::cout << "Visa case, case number: ";
-                startedCaseInfo = registration->startVisaCase(testVisaData(clientId));
+                startedCaseInfo = registration->startVisaCase(testVisaData(clientId, Office::Country::USA));
             }
             else if(c == "2") {
-                std::cout << "Passport case, case number: ";
-                startedCaseInfo = registration->startPassportCase(testPassportData(clientId));
+                std::cout << "Visa case, case number: ";
+                startedCaseInfo = registration->startVisaCase(testVisaData(clientId, Office::Country::NorthKorea));
             }
             else if(c == "3") {
+                std::cout << "Passport case, case number: ";
+                startedCaseInfo = registration->startPassportCase(testPassportData(clientId, true));
+            }
+            else if(c == "4") {
+                std::cout << "Passport case, case number: ";
+                startedCaseInfo = registration->startPassportCase(testPassportData(clientId, false));
+            }
+            else if(c == "5") {
                 std::cout << "Driver license case, case number: ";
                 startedCaseInfo = registration->startDriverLicenseCase(testDriverLicenseData(clientId,true));
+            }
+            else if(c == "6") {
+                std::cout << "Driver license case, case number: ";
+                startedCaseInfo = registration->startDriverLicenseCase(testDriverLicenseData(clientId,false));
             }
             else {
                 std::cin >> c;
